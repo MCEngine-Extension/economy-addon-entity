@@ -51,10 +51,10 @@ allprojects {
 }
 
 dependencies {
-    compileOnly 'io.github.mcengine:mcengine-api:1.0.0-RELEASE'
+    compileOnly 'io.github.mcengine:mcengine-api:1.0.2-RELEASE'
     compileOnly 'io.github.mcengine:mcengine-currency-api:1.0.1-RELEASE'
 
-    compileOnly 'org.spigotmc:spigot-api:1.21.5-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.21.6-R0.1-SNAPSHOT'
 }
 
 shadowJar {

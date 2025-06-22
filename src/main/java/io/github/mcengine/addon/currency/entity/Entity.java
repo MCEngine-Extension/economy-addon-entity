@@ -1,6 +1,6 @@
 package io.github.mcengine.addon.currency.entity;
 
-import io.github.mcengine.api.currency.addon.IMCEngineCurrencyAddOn;
+import io.github.mcengine.api.currency.extension.addon.IMCEngineCurrencyAddOn;
 import io.github.mcengine.api.mcengine.MCEngineApi;
 import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
 import io.github.mcengine.addon.currency.entity.listener.EntityListener;

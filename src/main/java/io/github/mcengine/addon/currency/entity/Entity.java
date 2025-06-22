@@ -27,7 +27,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
         }
 
         MCEngineApi.checkUpdate(plugin, logger.getLogger(),
-        "[AddOn] [MCEngineEntity] ", "github", "MCEngine-AddOn",
-        "currency-entity", plugin.getConfig().getString("github.token", "null"));
+        "[AddOn] [MCEngineEntity] ", "github", "MCEngine-Extension",
+        "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
 }

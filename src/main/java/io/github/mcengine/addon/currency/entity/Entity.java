@@ -15,11 +15,11 @@ public class Entity implements IMCEngineCurrencyAddOn {
     public void onLoad(Plugin plugin) {
         MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineEntity");
         try {
-            PluginManager pluginManager = Bukkit.getPluginManager();
-            pluginManager.registerEvents(new EntityListener(plugin, logger), plugin);
-
             // Create example config files
             EntityUtil.createSimpleFiles(plugin);
+
+            PluginManager pluginManager = Bukkit.getPluginManager();
+            pluginManager.registerEvents(new EntityListener(plugin, logger), plugin);
 
         } catch (Exception e) {
             logger.warning("Failed to initialize Entity: " + e.getMessage());

@@ -13,7 +13,7 @@ import java.util.*;
 public class EntityUtil {
 
     public static void createSimpleFiles(Plugin plugin) {
-        File addonDir = new File(plugin.getDataFolder().getParentFile(), "MCEngineCurrency/addons/MCEngineEntity");
+        File addonDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
 
         if (!addonDir.exists() && !addonDir.mkdirs()) {
             plugin.getLogger().warning("Failed to create MCEngineEntity config folder.");
@@ -46,7 +46,7 @@ public class EntityUtil {
 
     public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, MCEngineAddOnLogger logger) {
         Map<EntityType, RewardConfig> rewardMap = new HashMap<>();
-        File baseDir = new File(plugin.getDataFolder().getParentFile(), "MCEngineCurrency/addons/MCEngineEntity");
+        File baseDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
 
         if (!baseDir.exists()) {
             logger.warning("Directory not found: " + baseDir.getAbsolutePath());

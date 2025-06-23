@@ -1,6 +1,6 @@
-package io.github.mcengine.addon.currency.entity.util;
+package io.github.mcengine.extension.addon.currency.entity.util;
 
-import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;

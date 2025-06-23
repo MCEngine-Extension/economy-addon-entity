@@ -1,9 +1,9 @@
-package io.github.mcengine.addon.currency.entity.listener;
+package io.github.mcengine.extension.addon.currency.entity.listener;
 
-import io.github.mcengine.addon.currency.entity.util.EntityUtil;
-import io.github.mcengine.addon.currency.entity.util.EntityUtil.RewardConfig;
+import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
+import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
 import io.github.mcengine.api.currency.MCEngineCurrencyApi;
-import io.github.mcengine.api.mcengine.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

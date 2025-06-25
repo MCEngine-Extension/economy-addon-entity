@@ -45,12 +45,14 @@ allprojects {
         }
 
         configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
+        configureGitHubRepo('MCEngine Currency API', 'https://maven.pkg.github.com/MCEngine/currency-api')
         configureGitHubRepo('MCEngine Currency Common', 'https://maven.pkg.github.com/MCEngine/currency-common')
     }
 }
 
 dependencies {
     compileOnly 'io.github.mcengine:core-api:1.0.5-RELEASE'
+    compileOnly 'io.github.mcengine:currency-api:1.0.4-RELEASE'
     compileOnly 'io.github.mcengine:currency-common:1.0.1-RELEASE'
 
     compileOnly 'org.spigotmc:spigot-api:1.21.6-R0.1-SNAPSHOT'

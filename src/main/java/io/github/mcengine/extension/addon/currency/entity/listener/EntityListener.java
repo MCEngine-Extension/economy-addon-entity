@@ -2,7 +2,7 @@ package io.github.mcengine.extension.addon.currency.entity.listener;
 
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
-import io.github.mcengine.api.currency.MCEngineCurrencyApi;
+import io.github.mcengine.common.currency.MCEngineCurrencyCommon;
 import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -18,14 +18,14 @@ public class EntityListener implements Listener {
 
     private final Plugin plugin;
     private final MCEngineAddOnLogger logger;
-    private final MCEngineCurrencyApi currencyApi;
+    private final MCEngineCurrencyCommon currencyApi;
     private final Random random = new Random();
     private final Map<EntityType, RewardConfig> rewardMap;
 
     public EntityListener(Plugin plugin, MCEngineAddOnLogger logger) {
         this.plugin = plugin;
         this.logger = logger;
-        this.currencyApi = MCEngineCurrencyApi.getApi();
+        this.currencyApi = MCEngineCurrencyCommon.getApi();
         this.rewardMap = EntityUtil.loadAllMobConfigs(plugin, logger);
     }
 

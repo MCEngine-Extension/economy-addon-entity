@@ -62,7 +62,6 @@ public class EntityListener implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Player killer = event.getEntity().getKiller();
             if (killer == null) {
-                logger.info("Entity killed but no player killer.");
                 return;
             }
 

@@ -9,8 +9,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+/**
+ * Main class for the MCEngineEntity currency addon.
+ * Registers entity listeners and loads entity reward configurations.
+ */
 public class Entity implements IMCEngineCurrencyAddOn {
 
+    /**
+     * Called when the addon is loaded by the plugin.
+     * Registers listeners, loads example files, and checks for updates.
+     *
+     * @param plugin The Bukkit plugin instance.
+     */
     @Override
     public void onLoad(Plugin plugin) {
         MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineEntity");
@@ -27,7 +37,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
         }
 
         MCEngineApi.checkUpdate(plugin, logger.getLogger(),
-        "[AddOn] [MCEngineEntity] ", "github", "MCEngine-Extension",
-        "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
+            "[AddOn] [MCEngineEntity] ", "github", "MCEngine-Extension",
+            "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
 }

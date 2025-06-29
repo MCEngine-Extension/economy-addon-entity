@@ -10,8 +10,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Utility class for handling entity reward configurations.
+ * Includes methods for creating example files and loading reward data.
+ */
 public class EntityUtil {
 
+    /**
+     * Creates example YAML configuration files for ZOMBIE and SKELETON
+     * if they do not already exist.
+     *
+     * @param plugin The plugin instance used to resolve the data folder.
+     */
     public static void createSimpleFiles(Plugin plugin) {
         File addonDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
 
@@ -44,6 +54,13 @@ public class EntityUtil {
         }
     }
 
+    /**
+     * Loads all reward configuration files and maps them to entity types.
+     *
+     * @param plugin The plugin instance.
+     * @param logger Logger for reporting invalid configs or errors.
+     * @return A map of EntityType to its RewardConfig.
+     */
     public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, MCEngineAddOnLogger logger) {
         Map<EntityType, RewardConfig> rewardMap = new HashMap<>();
         File baseDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
@@ -78,6 +95,12 @@ public class EntityUtil {
         return rewardMap;
     }
 
+    /**
+     * Recursively collects all .yml files in a given directory.
+     *
+     * @param dir     The root directory to search.
+     * @param outList The output list to fill with found YAML files.
+     */
     private static void collectYamlFiles(File dir, List<File> outList) {
         File[] files = dir.listFiles();
         if (files == null) return;
@@ -91,7 +114,20 @@ public class EntityUtil {
         }
     }
 
+    /**
+     * Record holding reward configuration for a specific entity.
+     *
+     * @param coinType    The type of coin to reward.
+     * @param amountRange The amount range (e.g., "100~200" or "50").
+     */
     public record RewardConfig(String coinType, String amountRange) {
+
+        /**
+         * Returns a randomly selected reward amount based on the configured range.
+         *
+         * @param random Random instance to use.
+         * @return A reward value within the specified range.
+         */
         public int getRandomAmount(Random random) {
             if (amountRange.contains("~")) {
                 String[] parts = amountRange.split("~");

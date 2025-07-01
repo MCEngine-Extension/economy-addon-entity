@@ -3,7 +3,7 @@ package io.github.mcengine.extension.addon.currency.entity.listener;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
 import io.github.mcengine.common.currency.MCEngineCurrencyCommon;
-import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

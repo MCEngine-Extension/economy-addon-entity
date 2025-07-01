@@ -1,8 +1,8 @@
 package io.github.mcengine.extension.addon.currency.entity;
 
 import io.github.mcengine.api.currency.extension.addon.IMCEngineCurrencyAddOn;
-import io.github.mcengine.api.mcengine.MCEngineApi;
-import io.github.mcengine.api.mcengine.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
 import io.github.mcengine.extension.addon.currency.entity.listener.EntityListener;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import org.bukkit.Bukkit;
@@ -37,7 +37,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
         }
 
         MCEngineApi.checkUpdate(plugin, logger.getLogger(),
-            "[AddOn] [MCEngineEntity] ", "github", "MCEngine-Extension",
+        "github", "MCEngine-Extension",
             "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
 }

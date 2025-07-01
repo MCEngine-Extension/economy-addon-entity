@@ -43,11 +43,11 @@ public class EntityListener implements Listener {
      * @param plugin The plugin instance for scheduling tasks.
      * @param logger Logger instance for debug/info output.
      */
-    public EntityListener(Plugin plugin, MCEngineAddOnLogger logger) {
+    public EntityListener(Plugin plugin, String folderPath, MCEngineAddOnLogger logger) {
         this.plugin = plugin;
         this.logger = logger;
         this.currencyApi = MCEngineCurrencyCommon.getApi();
-        this.rewardMap = EntityUtil.loadAllMobConfigs(plugin, logger);
+        this.rewardMap = EntityUtil.loadAllMobConfigs(plugin, folderPath, logger);
     }
 
     /**

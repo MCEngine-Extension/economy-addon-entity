@@ -22,8 +22,8 @@ public class EntityUtil {
      *
      * @param plugin The plugin instance used to resolve the data folder.
      */
-    public static void createSimpleFiles(Plugin plugin) {
-        File addonDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
+    public static void createSimpleFiles(Plugin plugin, String folderPath) {
+        File addonDir = new File(plugin.getDataFolder(), folderPath);
 
         if (!addonDir.exists() && !addonDir.mkdirs()) {
             plugin.getLogger().warning("Failed to create MCEngineEntity config folder.");
@@ -61,9 +61,9 @@ public class EntityUtil {
      * @param logger Logger for reporting invalid configs or errors.
      * @return A map of EntityType to its RewardConfig.
      */
-    public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, MCEngineAddOnLogger logger) {
+    public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, String folderPath, MCEngineAddOnLogger logger) {
         Map<EntityType, RewardConfig> rewardMap = new HashMap<>();
-        File baseDir = new File(plugin.getDataFolder(), "configs/addons/MCEngineEntity");
+        File baseDir = new File(plugin.getDataFolder(), folderPath);
 
         if (!baseDir.exists()) {
             logger.warning("Directory not found: " + baseDir.getAbsolutePath());

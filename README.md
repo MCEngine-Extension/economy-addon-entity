@@ -1,4 +1,4 @@
-[![Spigot](https://raw.githubusercontent.com/intergrav/devins-badges/refs/heads/v3/assets/cozy/available/spigot_vector.svg)](https://www.spigotmc.org/resources/mcengine-addon-currency-entity.125828/)
+[![Spigot](https://raw.githubusercontent.com/intergrav/devins-badges/refs/heads/v3/assets/cozy/available/spigot_vector.svg)](https://www.spigotmc.org/resources/currency-addon-entity.125828/)
 
 # 📖 Information
 

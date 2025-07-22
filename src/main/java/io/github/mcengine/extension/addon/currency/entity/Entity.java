@@ -2,7 +2,7 @@ package io.github.mcengine.extension.addon.currency.entity;
 
 import io.github.mcengine.api.currency.extension.addon.IMCEngineCurrencyAddOn;
 import io.github.mcengine.api.core.MCEngineApi;
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.extension.addon.currency.entity.listener.EntityListener;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import org.bukkit.Bukkit;
@@ -23,7 +23,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
      */
     @Override
     public void onLoad(Plugin plugin) {
-        MCEngineAddOnLogger logger = new MCEngineAddOnLogger(plugin, "MCEngineEntity");
+        MCEngineExtensionLogger logger = new MCEngineExtensionLogger(plugin, "AddOn", "MCEngineEntity");
         String folderPath = "extensions/addons/configs/MCEngineEntity";
         try {
             // Create example config files
@@ -41,4 +41,12 @@ public class Entity implements IMCEngineCurrencyAddOn {
         "github", "MCEngine-Extension",
             "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
+
+    @Override
+    public void setId(String id) {
+        MCEngineApi.setId("mcengine-entity");
+    }
+
+    @Override
+    public void onDisload(Plugin plugin) {}
 }

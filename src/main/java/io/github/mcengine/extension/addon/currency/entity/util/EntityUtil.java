@@ -1,6 +1,6 @@
 package io.github.mcengine.extension.addon.currency.entity.util;
 
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -61,7 +61,7 @@ public class EntityUtil {
      * @param logger Logger for reporting invalid configs or errors.
      * @return A map of EntityType to its RewardConfig.
      */
-    public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, String folderPath, MCEngineAddOnLogger logger) {
+    public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         Map<EntityType, RewardConfig> rewardMap = new HashMap<>();
         File baseDir = new File(plugin.getDataFolder(), folderPath);
 

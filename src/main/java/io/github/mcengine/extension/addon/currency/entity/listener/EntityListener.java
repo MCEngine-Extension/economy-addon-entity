@@ -3,7 +3,7 @@ package io.github.mcengine.extension.addon.currency.entity.listener;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
 import io.github.mcengine.common.currency.MCEngineCurrencyCommon;
-import io.github.mcengine.api.core.extension.addon.MCEngineAddOnLogger;
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class EntityListener implements Listener {
     private final Plugin plugin;
 
     /** Logger used to print debug or info messages. */
-    private final MCEngineAddOnLogger logger;
+    private final MCEngineExtensionLogger logger;
 
     /** API used for modifying player currency. */
     private final MCEngineCurrencyCommon currencyApi;
@@ -43,7 +43,7 @@ public class EntityListener implements Listener {
      * @param plugin The plugin instance for scheduling tasks.
      * @param logger Logger instance for debug/info output.
      */
-    public EntityListener(Plugin plugin, String folderPath, MCEngineAddOnLogger logger) {
+    public EntityListener(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         this.plugin = plugin;
         this.logger = logger;
         this.currencyApi = MCEngineCurrencyCommon.getApi();

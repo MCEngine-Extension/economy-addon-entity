@@ -44,16 +44,16 @@ allprojects {
             }
         }
 
-        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
-        configureGitHubRepo('MCEngine Currency API', 'https://maven.pkg.github.com/MCEngine/currency-api')
-        configureGitHubRepo('MCEngine Currency Common', 'https://maven.pkg.github.com/MCEngine/currency-common')
+        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
+        configureGitHubRepo('MCEngine Currency API', 'https://maven.pkg.github.com/MCEngine-API/currency')
+        configureGitHubRepo('MCEngine Currency Common', 'https://maven.pkg.github.com/MCEngine-Common/currency')
     }
 }
 
 dependencies {
-    compileOnly 'io.github.mcengine:core-api:1.0.6-RELEASE'
-    compileOnly 'io.github.mcengine:currency-api:1.0.4-RELEASE'
-    compileOnly 'io.github.mcengine:currency-common:1.0.2-RELEASE'
+    compileOnly 'io.github.mcengine:core-api:2025.0.7-22'
+    compileOnly 'io.github.mcengine:currency-api:2025.0.7-22-1'
+    compileOnly 'io.github.mcengine:currency-common:2025.0.7-22'
 
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 }

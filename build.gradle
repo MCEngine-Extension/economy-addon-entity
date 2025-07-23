@@ -51,9 +51,9 @@ allprojects {
 }
 
 dependencies {
-    compileOnly 'io.github.mcengine:core-api:2025.0.7-22'
-    compileOnly 'io.github.mcengine:currency-api:2025.0.7-22-1'
-    compileOnly 'io.github.mcengine:currency-common:2025.0.7-22'
+    compileOnly 'io.github.mcengine:core-api:2025.0.7-24'
+    compileOnly 'io.github.mcengine:currency-api:2025.0.7-24'
+    compileOnly 'io.github.mcengine:currency-common:2025.0.7-24'
 
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 }

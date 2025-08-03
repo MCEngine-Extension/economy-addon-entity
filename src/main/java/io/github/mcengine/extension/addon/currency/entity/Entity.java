@@ -1,7 +1,7 @@
 package io.github.mcengine.extension.addon.currency.entity;
 
 import io.github.mcengine.api.currency.extension.addon.IMCEngineCurrencyAddOn;
-import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import io.github.mcengine.extension.addon.currency.entity.listener.EntityListener;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
@@ -37,14 +37,14 @@ public class Entity implements IMCEngineCurrencyAddOn {
             e.printStackTrace();
         }
 
-        MCEngineApi.checkUpdate(plugin, logger.getLogger(),
+        MCEngineCoreApi.checkUpdate(plugin, logger.getLogger(),
         "github", "MCEngine-Extension",
             "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
 
     @Override
     public void setId(String id) {
-        MCEngineApi.setId("mcengine-entity");
+        MCEngineCoreApi.setId("mcengine-entity");
     }
 
     @Override

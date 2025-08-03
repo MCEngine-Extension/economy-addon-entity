@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Listener that rewards players with currency when they kill configured entity types.
@@ -84,10 +85,19 @@ public class EntityListener implements Listener {
             if (partyApi != null) {
                 String partyId = partyApi.findPlayerPartyId(killer);
                 if (partyId != null) {
-                    // Player is in a party - share reward with all party members (offline/online)
-                    Set<UUID> members = partyApi.getPartyMembers(partyId);
-                    int share = rewardAmount / members.size();
+                    // Workaround: collect members by scanning online players
+                    Set<UUID> members = Bukkit.getOnlinePlayers().stream()
+                            .filter(p -> {
+                                String pid = partyApi.findPlayerPartyId(p);
+                                return pid != null && pid.equals(partyId);
+                            })
+                            .map(Player::getUniqueId)
+                            .collect(Collectors.toSet());
 
+                    // Always include killer if not online (e.g. fallback scenario)
+                    members.add(killer.getUniqueId());
+
+                    int share = rewardAmount / members.size();
                     for (UUID memberId : members) {
                         currencyApi.addCoin(memberId, config.coinType(), share);
                     }

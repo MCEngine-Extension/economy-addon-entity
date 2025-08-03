@@ -1,5 +1,6 @@
 package io.github.mcengine.extension.addon.currency.entity.listener;
 
+import io.github.mcengine.common.party.MCEnginePartyCommon;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
 import io.github.mcengine.common.currency.MCEngineCurrencyCommon;
@@ -15,10 +16,13 @@ import org.bukkit.plugin.Plugin;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+import java.util.Set;
 
 /**
  * Listener that rewards players with currency when they kill configured entity types.
- * The reward configuration is defined per entity type and handled asynchronously.
+ * If the killer is in a party, the reward is split among all party members (including offline).
+ * If party support is unavailable, fallback to normal individual reward.
  */
 public class EntityListener implements Listener {
 
@@ -40,8 +44,9 @@ public class EntityListener implements Listener {
     /**
      * Constructs a new EntityListener and loads reward configurations for all mobs.
      *
-     * @param plugin The plugin instance for scheduling tasks.
-     * @param logger Logger instance for debug/info output.
+     * @param plugin     The plugin instance for scheduling tasks.
+     * @param folderPath The path to the folder containing entity config files.
+     * @param logger     Logger instance for debug/info output.
      */
     public EntityListener(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         this.plugin = plugin;
@@ -52,18 +57,17 @@ public class EntityListener implements Listener {
 
     /**
      * Called when an entity dies. If the killer is a player and the entity type has
-     * a reward configured, it will asynchronously calculate and award the player with currency.
+     * a reward configured, it will asynchronously calculate and award the player or
+     * party members (online and offline) with currency. If party support is unavailable,
+     * the reward is given to the player directly.
      *
      * @param event The entity death event triggered by Bukkit.
      */
     @EventHandler
     public void onEntityKill(EntityDeathEvent event) {
-        // Run reward logic asynchronously
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             Player killer = event.getEntity().getKiller();
-            if (killer == null) {
-                return;
-            }
+            if (killer == null) return;
 
             EntityType type = event.getEntityType();
             logger.info(killer.getName() + " killed entity: " + type.name());
@@ -74,16 +78,45 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            int reward = config.getRandomAmount(random);
-            currencyApi.addCoin(killer.getUniqueId(), config.coinType(), reward);
+            int rewardAmount = config.getRandomAmount(random);
+            MCEnginePartyCommon partyApi = MCEnginePartyCommon.getApi();
 
-            // Notify the player on the main thread
+            if (partyApi != null) {
+                String partyId = partyApi.findPlayerPartyId(killer);
+                if (partyId != null) {
+                    // Player is in a party - share reward with all party members (offline/online)
+                    Set<UUID> members = partyApi.getPartyMembers(partyId);
+                    int share = rewardAmount / members.size();
+
+                    for (UUID memberId : members) {
+                        currencyApi.addCoin(memberId, config.coinType(), share);
+                    }
+
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        for (UUID memberId : members) {
+                            Player member = Bukkit.getPlayer(memberId);
+                            if (member != null) {
+                                member.sendMessage("§aYour party earned §e" + rewardAmount + " " + config.coinType() +
+                                        "§a from defeating a §6" + type.name().toLowerCase(Locale.ROOT) +
+                                        "§a. You received §e" + share + "§a.");
+                            }
+                        }
+                    });
+
+                    logger.info("Distributed " + rewardAmount + " " + config.coinType() + " to party: " + partyId);
+                    return;
+                }
+            }
+
+            // Fallback or solo reward
+            currencyApi.addCoin(killer.getUniqueId(), config.coinType(), rewardAmount);
+
             Bukkit.getScheduler().runTask(plugin, () -> {
-                killer.sendMessage("§aYou earned §e" + reward + " " + config.coinType() +
+                killer.sendMessage("§aYou earned §e" + rewardAmount + " " + config.coinType() +
                         "§a for defeating a §6" + type.name().toLowerCase(Locale.ROOT) + "§a.");
             });
 
-            logger.info("Rewarded " + killer.getName() + " with " + reward + " " + config.coinType());
+            logger.info("Rewarded " + killer.getName() + " with " + rewardAmount + " " + config.coinType());
         });
     }
 }

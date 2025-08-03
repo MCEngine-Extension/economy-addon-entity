@@ -46,20 +46,23 @@ allprojects {
 
         configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
         configureGitHubRepo('MCEngine Currency API', 'https://maven.pkg.github.com/MCEngine-API/currency')
-        configureGitHubRepo('MCEngine Party API', 'https://maven.pkg.github.com/MCEngine-API/party')
 
         configureGitHubRepo('MCEngine Currency Common', 'https://maven.pkg.github.com/MCEngine-Common/currency')
+        configureGitHubRepo('MCEngine Party Common', 'https://maven.pkg.github.com/MCEngine-Common/party')
     }
 }
 
 dependencies {
+    // Minecraft Server Platform
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 
+    // API
     compileOnly 'io.github.mcengine:core-api:2025.0.8-3'
     compileOnly 'io.github.mcengine:currency-api:2025.0.8-3'
-    compileOnly 'io.github.mcengine:party-api:2025.0.8-3'
 
+    // Common
     compileOnly 'io.github.mcengine:currency-common:2025.0.8-3'
+    compileOnly 'io.github.mcengine:party-common:2025.0.8-3'
 }
 
 shadowJar {

@@ -32,7 +32,6 @@ public class EntityConfigUtil {
         config.options().header("Configuration file for MCEngineEntity AddOn");
 
         config.set("license", "free");
-        config.set("reward.defaultCoinType", "coin");
 
         try {
             config.save(configFile);

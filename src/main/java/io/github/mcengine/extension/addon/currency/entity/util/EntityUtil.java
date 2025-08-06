@@ -18,20 +18,21 @@ public class EntityUtil {
 
     /**
      * Creates example YAML configuration files for ZOMBIE and SKELETON
-     * if they do not already exist.
+     * inside the "default" directory if they do not already exist.
      *
-     * @param plugin The plugin instance used to resolve the data folder.
+     * @param plugin     The plugin instance used to resolve the data folder.
+     * @param folderPath The folder path relative to the plugin's data folder.
      */
     public static void createSimpleFiles(Plugin plugin, String folderPath) {
-        File addonDir = new File(plugin.getDataFolder(), folderPath);
+        File defaultDir = new File(plugin.getDataFolder(), folderPath + "/default");
 
-        if (!addonDir.exists() && !addonDir.mkdirs()) {
-            plugin.getLogger().warning("Failed to create MCEngineEntity config folder.");
+        if (!defaultDir.exists() && !defaultDir.mkdirs()) {
+            plugin.getLogger().warning("Failed to create default entity config folder.");
             return;
         }
 
-        File zombieFile = new File(addonDir, "zombie.yml");
-        File skeletonFile = new File(addonDir, "skeleton.yml");
+        File zombieFile = new File(defaultDir, "zombie.yml");
+        File skeletonFile = new File(defaultDir, "skeleton.yml");
 
         if (!zombieFile.exists()) {
             try (FileWriter writer = new FileWriter(zombieFile)) {
@@ -55,25 +56,27 @@ public class EntityUtil {
     }
 
     /**
-     * Loads all reward configuration files and maps them to entity types.
+     * Loads all reward configuration files from the "default" folder
+     * and maps them to their respective entity types.
      *
-     * @param plugin The plugin instance.
-     * @param logger Logger for reporting invalid configs or errors.
+     * @param plugin     The plugin instance.
+     * @param folderPath The folder path relative to the plugin's data folder.
+     * @param logger     Logger for reporting invalid configs or errors.
      * @return A map of EntityType to its RewardConfig.
      */
     public static Map<EntityType, RewardConfig> loadAllMobConfigs(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         Map<EntityType, RewardConfig> rewardMap = new HashMap<>();
-        File baseDir = new File(plugin.getDataFolder(), folderPath);
+        File defaultDir = new File(plugin.getDataFolder(), folderPath + "/default");
 
-        if (!baseDir.exists()) {
-            logger.warning("Directory not found: " + baseDir.getAbsolutePath());
+        if (!defaultDir.exists()) {
+            logger.warning("Directory not found: " + defaultDir.getAbsolutePath());
             return rewardMap;
         }
 
-        logger.info("Loading configs from: " + baseDir.getAbsolutePath());
+        logger.info("Loading configs from: " + defaultDir.getAbsolutePath());
 
         List<File> yamlFiles = new ArrayList<>();
-        collectYamlFiles(baseDir, yamlFiles);
+        collectYamlFiles(defaultDir, yamlFiles);
 
         for (File file : yamlFiles) {
             logger.info("Reading file: " + file.getName());

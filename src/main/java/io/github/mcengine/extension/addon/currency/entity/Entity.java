@@ -36,10 +36,6 @@ public class Entity implements IMCEngineCurrencyAddOn {
             logger.warning("Failed to initialize Entity: " + e.getMessage());
             e.printStackTrace();
         }
-
-        MCEngineCoreApi.checkUpdate(plugin, logger.getLogger(),
-        "github", "MCEngine-Extension",
-            "currency-addon-entity", plugin.getConfig().getString("github.token", "null"));
     }
 
     @Override

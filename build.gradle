@@ -57,11 +57,11 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 
     // API
-    compileOnly 'io.github.mcengine:core-api:2025.0.8-6'
+    compileOnly 'io.github.mcengine:core-api:2025.0.8-6-1-dispatcher'
     compileOnly 'io.github.mcengine:currency-api:2025.0.8-6'
 
     // Common
-    compileOnly 'io.github.mcengine:currency-common:2025.0.8-6'
+    compileOnly 'io.github.mcengine:currency-common:2025.0.8-6-2-dispatcher'
     compileOnly 'io.github.mcengine:party-common:2025.0.8-6'
 }
 

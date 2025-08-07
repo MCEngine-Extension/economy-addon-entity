@@ -70,11 +70,11 @@ public class EntityUtil {
     }
 
     /**
-     * Creates a single example MythicMob reward config file.
+     * Creates a single example MythicMob reward config file with an ID header.
      *
      * @param plugin     Plugin instance for logging.
      * @param dir        The directory to write the file into.
-     * @param mobName    MythicMob internal name (file name).
+     * @param mobName    MythicMob internal name (used as file name and ID field).
      * @param coinType   The coin type to assign.
      * @param amount     The amount or range (e.g., "100~150").
      */
@@ -83,6 +83,7 @@ public class EntityUtil {
         if (file.exists()) return;
 
         try (FileWriter writer = new FileWriter(file)) {
+            writer.write("id: " + mobName + "\n");
             writer.write("coinType: " + coinType + "\n");
             writer.write("amount: " + amount + "\n");
         } catch (IOException e) {

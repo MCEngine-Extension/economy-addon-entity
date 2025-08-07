@@ -69,7 +69,7 @@ public class EntityListener implements Listener {
      * or their party members will be awarded currency asynchronously.
      * <p>
      * - If the entity is a regular Bukkit entity (e.g., ZOMBIE), it checks the default config.
-     * - If the entity was spawned by MythicMobs and contains metadata "MythicMob",
+     * - If the entity was spawned by MythicMobs and contains metadata "MythicMobName",
      *   it loads the config from the MythicMobs config directory using the mob's internal name.
      * <p>
      * If the killer is in a party, the reward is divided equally among online party members.
@@ -91,8 +91,8 @@ public class EntityListener implements Listener {
             RewardConfig config = rewardMap.get(type);
 
             // Check for MythicMob metadata if no vanilla config found
-            if (config == null && entity.hasMetadata("MythicMob")) {
-                String mobName = entity.getMetadata("MythicMob").get(0).asString();
+            if (config == null && entity.hasMetadata("MythicMobName")) {
+                String mobName = entity.getMetadata("MythicMobName").get(0).asString();
                 config = EntityUtil.getMythicMobReward(plugin, folderPath, mobName);
                 if (config == null) {
                     logger.info("No reward config found for MythicMob: " + mobName);

@@ -19,20 +19,6 @@ allprojects {
     apply plugin: 'com.gradleup.shadow'
 
     repositories {
-        mavenCentral()
-        mavenLocal()
-
-        maven {
-            url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
-            content {
-                includeGroup 'org.bukkit'
-                includeGroup 'org.spigotmc'
-            }
-        }
-
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://oss.sonatype.org/content/repositories/central' }
-
         ext.configureGitHubRepo = { repoName, repoUrl ->
             maven {
                 name = repoName
@@ -49,6 +35,22 @@ allprojects {
 
         configureGitHubRepo('MCEngine Currency Common', 'https://maven.pkg.github.com/MCEngine-Common/currency')
         configureGitHubRepo('MCEngine Party Common', 'https://maven.pkg.github.com/MCEngine-Common/party')
+
+        mavenCentral()
+        mavenLocal()
+
+        maven {
+            url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots'
+            content {
+                includeGroup 'org.bukkit'
+                includeGroup 'org.spigotmc'
+            }
+        }
+
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/central' }
+
+        maven { url 'https://mvn.lumine.io/repository/maven-public/' }
     }
 }
 
@@ -63,6 +65,9 @@ dependencies {
     // Common
     compileOnly 'io.github.mcengine:currency-common:2025.0.8-7'
     compileOnly 'io.github.mcengine:party-common:2025.0.8-7'
+
+    // Mobs engine
+    compileOnly 'io.lumine:Mythic-Dist:5.6.1'
 }
 
 shadowJar {

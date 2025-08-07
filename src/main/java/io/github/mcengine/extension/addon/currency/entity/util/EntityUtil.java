@@ -99,6 +99,25 @@ public class EntityUtil {
     }
 
     /**
+     * Gets the reward configuration for a MythicMob by name.
+     *
+     * @param plugin     Plugin instance.
+     * @param folderPath Relative folder path inside plugin's data folder.
+     * @param mobName    The MythicMob's internal name.
+     * @return RewardConfig if found; otherwise null.
+     */
+    public static RewardConfig getMythicMobReward(Plugin plugin, String folderPath, String mobName) {
+        File file = new File(plugin.getDataFolder(), folderPath + "/mythicmobs/" + mobName + ".yml");
+        if (!file.exists()) return null;
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String coinType = config.getString("coinType", "coin");
+        String amountRange = config.getString("amount", "0");
+
+        return new RewardConfig(coinType, amountRange);
+    }
+
+    /**
      * Recursively collects all .yml files in a given directory.
      *
      * @param dir     The root directory to search.

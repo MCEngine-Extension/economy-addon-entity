@@ -19,6 +19,7 @@ public class EntityUtil {
     /**
      * Creates example YAML configuration files for ZOMBIE and SKELETON
      * inside the "default" directory if they do not already exist.
+     * Also creates example MythicMobs reward configuration files if they do not exist.
      *
      * @param plugin     The plugin instance used to resolve the data folder.
      * @param folderPath The folder path relative to the plugin's data folder.
@@ -52,6 +53,40 @@ public class EntityUtil {
             } catch (IOException e) {
                 plugin.getLogger().warning("Failed to create skeleton.yml: " + e.getMessage());
             }
+        }
+
+        // MythicMobs examples
+        File mythicDir = new File(plugin.getDataFolder(), folderPath + "/mythicmobs");
+        if (!mythicDir.exists() && !mythicDir.mkdirs()) {
+            plugin.getLogger().warning("Failed to create mythicmobs config folder.");
+            return;
+        }
+
+        createMythicExample(plugin, mythicDir, "SkeletalKnight", "coin", "100~150");
+        createMythicExample(plugin, mythicDir, "SkeletonKing", "gold", "300~500");
+        createMythicExample(plugin, mythicDir, "SkeletalMinion", "copper", "10");
+        createMythicExample(plugin, mythicDir, "StaticallyChargedSheep", "copper", "100");
+        createMythicExample(plugin, mythicDir, "AngrySludge", "slime_coin", "150~200");
+    }
+
+    /**
+     * Creates a single example MythicMob reward config file.
+     *
+     * @param plugin     Plugin instance for logging.
+     * @param dir        The directory to write the file into.
+     * @param mobName    MythicMob internal name (file name).
+     * @param coinType   The coin type to assign.
+     * @param amount     The amount or range (e.g., "100~150").
+     */
+    private static void createMythicExample(Plugin plugin, File dir, String mobName, String coinType, String amount) {
+        File file = new File(dir, mobName + ".yml");
+        if (file.exists()) return;
+
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("coinType: " + coinType + "\n");
+            writer.write("amount: " + amount + "\n");
+        } catch (IOException e) {
+            plugin.getLogger().warning("Failed to create MythicMob file for " + mobName + ": " + e.getMessage());
         }
     }
 

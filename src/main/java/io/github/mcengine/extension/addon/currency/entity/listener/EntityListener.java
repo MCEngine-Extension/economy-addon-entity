@@ -89,22 +89,25 @@ public class EntityListener implements Listener {
             logger.info(killer.getName() + " killed entity: " + type.name());
 
             RewardConfig config = rewardMap.get(type);
+            String mobId = null;
 
             // Check for MythicMob metadata if no vanilla config found
             if (config == null && entity.hasMetadata("MythicMobName")) {
-                String mobName = entity.getMetadata("MythicMobName").get(0).asString();
-                config = EntityUtil.getMythicMobReward(plugin, folderPath, mobName);
+                mobId = entity.getMetadata("MythicMobName").get(0).asString();
+                config = EntityUtil.getMythicMobReward(plugin, folderPath, mobId);
                 if (config == null) {
-                    logger.info("No reward config found for MythicMob: " + mobName);
+                    logger.info("No reward config found for MythicMob: " + mobId);
                     return;
                 }
-                logger.info("Loaded MythicMob reward config: " + mobName);
+                logger.info("Loaded MythicMob reward config: " + mobId);
             }
 
             if (config == null) return;
 
             final int rewardAmount = config.getRandomAmount(random);
             final String coinType = config.coinType();
+            final String displayName = (mobId != null) ? mobId : type.name().toLowerCase(Locale.ROOT);
+
             MCEnginePartyCommon partyApi = MCEnginePartyCommon.getApi();
 
             if (partyApi != null) {
@@ -130,8 +133,7 @@ public class EntityListener implements Listener {
                             Player member = Bukkit.getPlayer(memberId);
                             if (member != null) {
                                 member.sendMessage("§aYour party earned §e" + rewardAmount + " " + coinType +
-                                        "§a from defeating a §6" + type.name().toLowerCase(Locale.ROOT) +
-                                        "§a. You received §e" + share + "§a.");
+                                        "§a from defeating a §6" + displayName + "§a. You received §e" + share + "§a.");
                             }
                         }
                     });
@@ -145,7 +147,7 @@ public class EntityListener implements Listener {
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 killer.sendMessage("§aYou earned §e" + rewardAmount + " " + coinType +
-                        "§a for defeating a §6" + type.name().toLowerCase(Locale.ROOT) + "§a.");
+                        "§a for defeating a §6" + displayName + "§a.");
             });
 
             logger.info("Rewarded " + killer.getName() + " with " + rewardAmount + " " + coinType);

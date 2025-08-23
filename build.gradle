@@ -57,12 +57,12 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT'
 
     // API
-    compileOnly 'io.github.mcengine:core-api:2025.0.8-23'
-    compileOnly 'io.github.mcengine:currency-api:2025.0.8-23'
+    compileOnly 'io.github.mcengine:core-api:2025.0.8-24'
+    compileOnly 'io.github.mcengine:currency-api:2025.0.8-24'
 
     // Common
-    compileOnly 'io.github.mcengine:currency-common:2025.0.8-23'
-    compileOnly 'io.github.mcengine:party-common:2025.0.8-23'
+    compileOnly 'io.github.mcengine:currency-common:2025.0.8-24'
+    compileOnly 'io.github.mcengine:party-common:2025.0.8-24'
 }
 
 shadowJar {

@@ -22,12 +22,13 @@ public class EntityUtil {
      *
      * @param plugin     The plugin instance used to resolve the data folder.
      * @param folderPath The folder path relative to the plugin's data folder.
+     * @param logger     Extension logger for reporting creation issues.
      */
-    public static void createSimpleFiles(Plugin plugin, String folderPath) {
+    public static void createSimpleFiles(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         File defaultDir = new File(plugin.getDataFolder(), folderPath + "/default");
 
         if (!defaultDir.exists() && !defaultDir.mkdirs()) {
-            plugin.getLogger().warning("Failed to create default entity config folder.");
+            logger.warning("Failed to create default entity config folder.");
             return;
         }
 
@@ -40,7 +41,7 @@ public class EntityUtil {
                 writer.write("coinType: coin\n");
                 writer.write("amount: 100~200\n");
             } catch (IOException e) {
-                plugin.getLogger().warning("Failed to create zombie.yml: " + e.getMessage());
+                logger.warning("Failed to create zombie.yml: " + e.getMessage());
             }
         }
 
@@ -50,7 +51,7 @@ public class EntityUtil {
                 writer.write("coinType: copper\n");
                 writer.write("amount: 50\n");
             } catch (IOException e) {
-                plugin.getLogger().warning("Failed to create skeleton.yml: " + e.getMessage());
+                logger.warning("Failed to create skeleton.yml: " + e.getMessage());
             }
         }
     }

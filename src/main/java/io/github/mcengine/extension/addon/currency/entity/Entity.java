@@ -20,7 +20,9 @@ import java.io.File;
  */
 public class Entity implements IMCEngineCurrencyAddOn {
 
-    /** Configuration folder path for entity rewards. */
+    /**
+     * Configuration folder path for entity rewards.
+     */
     private final String folderPath = "extensions/addons/configs/MCEngineEntity";
 
     /**
@@ -48,7 +50,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
 
         try {
             // Create example config files
-            EntityUtil.createSimpleFiles(plugin, folderPath);
+            EntityUtil.createSimpleFiles(plugin, folderPath, logger);
 
             PluginManager pluginManager = Bukkit.getPluginManager();
             pluginManager.registerEvents(new EntityListener(plugin, folderPath, logger), plugin);

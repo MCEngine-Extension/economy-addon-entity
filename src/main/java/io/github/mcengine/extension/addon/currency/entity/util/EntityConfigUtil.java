@@ -1,5 +1,6 @@
 package io.github.mcengine.extension.addon.currency.entity.util;
 
+import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -16,15 +17,16 @@ public class EntityConfigUtil {
      *
      * @param plugin     The plugin instance.
      * @param folderPath The folder path relative to the plugin's data directory.
+     * @param logger     Extension logger for reporting creation results.
      */
-    public static void createConfig(Plugin plugin, String folderPath) {
+    public static void createConfig(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         File configFile = new File(plugin.getDataFolder(), folderPath + "/config.yml");
 
         if (configFile.exists()) return;
 
         File configDir = configFile.getParentFile();
         if (!configDir.exists() && !configDir.mkdirs()) {
-            System.err.println("Failed to create entity config directory: " + configDir.getAbsolutePath());
+            logger.warning("Failed to create entity config directory: " + configDir.getAbsolutePath());
             return;
         }
 
@@ -35,9 +37,9 @@ public class EntityConfigUtil {
 
         try {
             config.save(configFile);
-            System.out.println("Created default Entity config: " + configFile.getAbsolutePath());
+            logger.info("Created default Entity config: " + configFile.getAbsolutePath());
         } catch (IOException e) {
-            System.err.println("Failed to save Entity config: " + e.getMessage());
+            logger.warning("Failed to save Entity config: " + e.getMessage());
             e.printStackTrace();
         }
     }

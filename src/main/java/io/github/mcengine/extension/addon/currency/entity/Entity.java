@@ -36,7 +36,7 @@ public class Entity implements IMCEngineCurrencyAddOn {
         MCEngineExtensionLogger logger = new MCEngineExtensionLogger(plugin, "AddOn", "MCEngineEntity");
 
         // Create default config.yml
-        EntityConfigUtil.createConfig(plugin, folderPath);
+        EntityConfigUtil.createConfig(plugin, folderPath, logger);
 
         // License check
         File configFile = new File(plugin.getDataFolder(), folderPath + "/config.yml");

@@ -1,11 +1,11 @@
-package io.github.mcengine.extension.addon.currency.entity;
+package io.github.mcengine.extension.addon.economy.entity;
 
-import io.github.mcengine.api.currency.extension.addon.IMCEngineCurrencyAddOn;
+import io.github.mcengine.api.economy.extension.addon.IMCEngineEconomyAddOn;
 import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
-import io.github.mcengine.extension.addon.currency.entity.listener.EntityListener;
-import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
-import io.github.mcengine.extension.addon.currency.entity.util.EntityConfigUtil;
+import io.github.mcengine.extension.addon.economy.entity.listener.EntityListener;
+import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil;
+import io.github.mcengine.extension.addon.economy.entity.util.EntityConfigUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,14 +15,12 @@ import org.bukkit.plugin.PluginManager;
 import java.io.File;
 
 /**
- * Main class for the MCEngineEntity currency addon.
+ * Main class for the MCEngineEntity Economy AddOn.
  * Registers entity listeners and loads entity reward configurations.
  */
-public class Entity implements IMCEngineCurrencyAddOn {
+public class Entity implements IMCEngineEconomyAddOn {
 
-    /**
-     * Configuration folder path for entity rewards.
-     */
+    /** Configuration folder path for entity rewards. */
     private final String folderPath = "extensions/addons/configs/MCEngineEntity";
 
     /**

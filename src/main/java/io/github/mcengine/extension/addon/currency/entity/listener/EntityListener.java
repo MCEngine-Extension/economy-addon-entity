@@ -1,9 +1,9 @@
-package io.github.mcengine.extension.addon.currency.entity.listener;
+package io.github.mcengine.extension.addon.economy.entity.listener;
 
 import io.github.mcengine.common.party.MCEnginePartyCommon;
-import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil;
-import io.github.mcengine.extension.addon.currency.entity.util.EntityUtil.RewardConfig;
-import io.github.mcengine.common.currency.MCEngineCurrencyCommon;
+import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil;
+import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil.RewardConfig;
+import io.github.mcengine.common.economy.MCEngineEconomyCommon;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Listener that rewards players with currency when they kill configured entity types.
+ * Listener that rewards players with economy coins when they kill configured entity types.
  * If the killer is in a party, the reward is split among all party members (including offline).
  * If party support is unavailable, fallback to normal individual reward.
  */
@@ -33,8 +33,8 @@ public class EntityListener implements Listener {
     /** Logger used to print debug or info messages. */
     private final MCEngineExtensionLogger logger;
 
-    /** API used for modifying player currency. */
-    private final MCEngineCurrencyCommon currencyApi;
+    /** API used for modifying player economy balances. */
+    private final MCEngineEconomyCommon currencyApi;
 
     /** Random instance used to calculate reward amounts. */
     private final Random random = new Random();
@@ -52,14 +52,14 @@ public class EntityListener implements Listener {
     public EntityListener(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
         this.plugin = plugin;
         this.logger = logger;
-        this.currencyApi = MCEngineCurrencyCommon.getApi();
+        this.currencyApi = MCEngineEconomyCommon.getApi();
         this.rewardMap = EntityUtil.loadAllMobConfigs(plugin, folderPath, logger);
     }
 
     /**
      * Called when an entity dies. If the killer is a player and the entity type has
      * a reward configured, it will asynchronously calculate and award the player or
-     * party members (online and offline) with currency. If party support is unavailable,
+     * party members (online and offline) with economy coins. If party support is unavailable,
      * the reward is given to the player directly.
      *
      * @param event The entity death event triggered by Bukkit.

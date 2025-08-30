@@ -5,6 +5,7 @@ import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil.RewardConfig;
 import io.github.mcengine.common.economy.MCEngineEconomyCommon;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
+import io.github.mcengine.extension.addon.economy.entity.database.EntityDB;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * Listener that rewards players with economy coins when they kill configured entity types.
  * If the killer is in a party, the reward is split among all party members (including offline).
  * If party support is unavailable, fallback to normal individual reward.
+ * <p>Additionally, each reward distribution is logged via {@link EntityDB#insertKillLog(String, String, String, int)}.</p>
  */
 public class EntityListener implements Listener {
 
@@ -42,25 +44,30 @@ public class EntityListener implements Listener {
     /** Cached reward configurations by entity type. */
     private final Map<EntityType, RewardConfig> rewardMap;
 
+    /** Database accessor used to audit per-kill rewards. */
+    private final EntityDB entityDB;
+
     /**
      * Constructs a new EntityListener and loads reward configurations for all mobs.
      *
      * @param plugin     The plugin instance for scheduling tasks.
      * @param folderPath The path to the folder containing entity config files.
      * @param logger     Logger instance for debug/info output.
+     * @param entityDB   Database accessor for optional audit logging.
      */
-    public EntityListener(Plugin plugin, String folderPath, MCEngineExtensionLogger logger) {
+    public EntityListener(Plugin plugin, String folderPath, MCEngineExtensionLogger logger, EntityDB entityDB) {
         this.plugin = plugin;
         this.logger = logger;
         this.currencyApi = MCEngineEconomyCommon.getApi();
         this.rewardMap = EntityUtil.loadAllMobConfigs(plugin, folderPath, logger);
+        this.entityDB = entityDB;
     }
 
     /**
      * Called when an entity dies. If the killer is a player and the entity type has
      * a reward configured, it will asynchronously calculate and award the player or
      * party members (online and offline) with economy coins. If party support is unavailable,
-     * the reward is given to the player directly.
+     * the reward is given to the player directly. Each distribution is also logged in the DB.
      *
      * @param event The entity death event triggered by Bukkit.
      */
@@ -97,9 +104,13 @@ public class EntityListener implements Listener {
                     // Always include killer if not online (e.g. fallback scenario)
                     members.add(killer.getUniqueId());
 
-                    int share = rewardAmount / members.size();
+                    int share = Math.max(1, rewardAmount / members.size());
                     for (UUID memberId : members) {
                         currencyApi.addCoin(memberId, config.coinType(), share);
+                        // Audit each member's share
+                        if (entityDB != null) {
+                            entityDB.insertKillLog(memberId.toString(), type.name(), config.coinType(), share);
+                        }
                     }
 
                     Bukkit.getScheduler().runTask(plugin, () -> {
@@ -120,6 +131,10 @@ public class EntityListener implements Listener {
 
             // Fallback or solo reward
             currencyApi.addCoin(killer.getUniqueId(), config.coinType(), rewardAmount);
+            // Audit solo reward
+            if (entityDB != null) {
+                entityDB.insertKillLog(killer.getUniqueId().toString(), type.name(), config.coinType(), rewardAmount);
+            }
 
             Bukkit.getScheduler().runTask(plugin, () -> {
                 killer.sendMessage("§aYou earned §e" + rewardAmount + " " + config.coinType() +

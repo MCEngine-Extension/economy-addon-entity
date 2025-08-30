@@ -79,7 +79,8 @@ public class Entity implements IMCEngineEconomyAddOn {
             EntityUtil.createSimpleFiles(plugin, folderPath, logger);
 
             PluginManager pluginManager = Bukkit.getPluginManager();
-            pluginManager.registerEvents(new EntityListener(plugin, folderPath, logger), plugin);
+            // Pass DB to listener so it can audit per-kill rewards.
+            pluginManager.registerEvents(new EntityListener(plugin, folderPath, logger, entityDB), plugin);
 
         } catch (Exception e) {
             logger.warning("Failed to initialize Entity: " + e.getMessage());

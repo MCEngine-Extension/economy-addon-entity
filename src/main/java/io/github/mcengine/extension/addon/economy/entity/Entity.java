@@ -3,16 +3,21 @@ package io.github.mcengine.extension.addon.economy.entity;
 import io.github.mcengine.api.economy.extension.addon.IMCEngineEconomyAddOn;
 import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
+import io.github.mcengine.common.economy.MCEngineEconomyCommon;
 import io.github.mcengine.extension.addon.economy.entity.listener.EntityListener;
 import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.economy.entity.util.EntityConfigUtil;
-
+import io.github.mcengine.extension.addon.economy.entity.database.EntityDB;
+import io.github.mcengine.extension.addon.economy.entity.database.sqlite.EntityDBSQLite;
+import io.github.mcengine.extension.addon.economy.entity.database.mysql.EntityDBMySQL;
+import io.github.mcengine.extension.addon.economy.entity.database.postgresql.EntityDBPostgreSQL;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
+import java.sql.Connection;
 
 /**
  * Main class for the MCEngineEntity Economy AddOn.
@@ -20,7 +25,9 @@ import java.io.File;
  */
 public class Entity implements IMCEngineEconomyAddOn {
 
-    /** Configuration folder path for entity rewards. */
+    /**
+     * Configuration folder path for entity rewards.
+     */
     private final String folderPath = "extensions/addons/configs/MCEngineEntity";
 
     /**
@@ -47,6 +54,27 @@ public class Entity implements IMCEngineEconomyAddOn {
         }
 
         try {
+            // Ensure DB schema (dialect-specific) for optional entity logging
+            Connection conn = MCEngineEconomyCommon.getApi().getDBConnection();
+            String dbType;
+            try {
+                dbType = plugin.getConfig().getString("database.type", "sqlite");
+            } catch (Throwable t) {
+                dbType = "sqlite";
+            }
+
+            EntityDB entityDB;
+            switch (dbType == null ? "sqlite" : dbType.toLowerCase()) {
+                case "mysql" -> entityDB = new EntityDBMySQL(conn, logger);
+                case "postgresql", "postgres" -> entityDB = new EntityDBPostgreSQL(conn, logger);
+                case "sqlite" -> entityDB = new EntityDBSQLite(conn, logger);
+                default -> {
+                    logger.warning("Unknown database.type='" + dbType + "', defaulting to SQLite for Entity.");
+                    entityDB = new EntityDBSQLite(conn, logger);
+                }
+            }
+            entityDB.ensureSchema();
+
             // Create example config files
             EntityUtil.createSimpleFiles(plugin, folderPath, logger);
 

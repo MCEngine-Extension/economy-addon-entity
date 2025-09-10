@@ -64,7 +64,7 @@ dependencies {
     compileOnly 'io.github.mcengine:economy-api:2025.0.9-10'
 
     // Common
-    compileOnly 'io.github.mcengine:economy-common:2025.0.9-10'
+    compileOnly 'io.github.mcengine:economy-common:2025.0.9-10-2'
     compileOnly 'io.github.mcengine:party-common:2025.0.9-10'
 }
 

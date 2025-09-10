@@ -3,7 +3,6 @@ package io.github.mcengine.extension.addon.economy.entity;
 import io.github.mcengine.api.economy.extension.addon.IMCEngineEconomyAddOn;
 import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
-import io.github.mcengine.common.economy.MCEngineEconomyCommon;
 import io.github.mcengine.extension.addon.economy.entity.listener.EntityListener;
 import io.github.mcengine.extension.addon.economy.entity.util.EntityUtil;
 import io.github.mcengine.extension.addon.economy.entity.util.EntityConfigUtil;
@@ -17,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
-import java.sql.Connection;
 
 /**
  * Main class for the MCEngineEntity Economy AddOn.
@@ -55,7 +53,6 @@ public class Entity implements IMCEngineEconomyAddOn {
 
         try {
             // Ensure DB schema (dialect-specific) for optional entity logging
-            Connection conn = MCEngineEconomyCommon.getApi().getDBConnection();
             String dbType;
             try {
                 dbType = plugin.getConfig().getString("database.type", "sqlite");
@@ -65,12 +62,12 @@ public class Entity implements IMCEngineEconomyAddOn {
 
             EntityDB entityDB;
             switch (dbType == null ? "sqlite" : dbType.toLowerCase()) {
-                case "mysql" -> entityDB = new EntityDBMySQL(conn, logger);
-                case "postgresql", "postgres" -> entityDB = new EntityDBPostgreSQL(conn, logger);
-                case "sqlite" -> entityDB = new EntityDBSQLite(conn, logger);
+                case "mysql" -> entityDB = new EntityDBMySQL(logger);
+                case "postgresql", "postgres" -> entityDB = new EntityDBPostgreSQL(logger);
+                case "sqlite" -> entityDB = new EntityDBSQLite(logger);
                 default -> {
                     logger.warning("Unknown database.type='" + dbType + "', defaulting to SQLite for Entity.");
-                    entityDB = new EntityDBSQLite(conn, logger);
+                    entityDB = new EntityDBSQLite(logger);
                 }
             }
             entityDB.ensureSchema();

@@ -1,35 +1,26 @@
 package io.github.mcengine.extension.addon.economy.entity.database.sqlite;
 
 import io.github.mcengine.api.core.extension.logger.MCEngineExtensionLogger;
+import io.github.mcengine.common.economy.MCEngineEconomyCommon;
 import io.github.mcengine.extension.addon.economy.entity.database.EntityDB;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 /**
  * SQLite implementation of {@link EntityDB}.
+ * <p>
+ * Uses the unified {@link io.github.mcengine.common.economy.database.MCEngineEconomyApiDBInterface}
+ * API instead of holding a raw JDBC connection.
  */
 public class EntityDBSQLite implements EntityDB {
 
-    /**
-     * Shared JDBC connection provided by the economy module.
-     */
-    private final Connection conn;
-
-    /**
-     * Logger for diagnostics and setup messages.
-     */
+    /** Logger for diagnostics and setup messages. */
     private final MCEngineExtensionLogger logger;
 
     /**
      * Constructs the DB helper for SQLite.
      *
-     * @param conn   JDBC connection
      * @param logger extension logger
      */
-    public EntityDBSQLite(Connection conn, MCEngineExtensionLogger logger) {
-        this.conn = conn;
+    public EntityDBSQLite(MCEngineExtensionLogger logger) {
         this.logger = logger;
     }
 
@@ -45,9 +36,15 @@ public class EntityDBSQLite implements EntityDB {
                 created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
             """;
-        try (Statement st = conn.createStatement()) {
-            st.executeUpdate(sql);
+        try {
+            MCEngineEconomyCommon.getApi().executeQuery(sql);
             if (logger != null) logger.info("[EntityDB] SQLite schema ensured.");
+
+            // Example use of getValue: count how many rows exist after creation
+            Integer count = MCEngineEconomyCommon.getApi()
+                    .getValue("SELECT COUNT(*) FROM economy_entity_kill_log;", Integer.class);
+            if (logger != null) logger.info("[EntityDB] Current kill_log rows: " + count);
+
         } catch (Exception e) {
             if (logger != null) logger.warning("[EntityDB] SQLite schema creation failed: " + e.getMessage());
         }
@@ -57,14 +54,18 @@ public class EntityDBSQLite implements EntityDB {
     public void insertKillLog(String playerUuid, String entityType, String coinType, int amount) {
         final String sql = """
             INSERT INTO economy_entity_kill_log (player_uuid, entity_type, coin_type, amount, created_time)
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP);
-            """;
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, playerUuid);
-            ps.setString(2, entityType);
-            ps.setString(3, coinType);
-            ps.setInt(4, amount);
-            ps.executeUpdate();
+            VALUES ('%s', '%s', '%s', %d, CURRENT_TIMESTAMP);
+            """.formatted(playerUuid, entityType, coinType, amount);
+        try {
+            MCEngineEconomyCommon.getApi().executeQuery(sql);
+
+            if (logger != null) logger.info("[EntityDB] KillLog inserted for player=" + playerUuid);
+
+            // Example: query back the last inserted row ID
+            Long lastId = MCEngineEconomyCommon.getApi()
+                    .getValue("SELECT MAX(kill_id) FROM economy_entity_kill_log;", Long.class);
+            if (logger != null) logger.info("[EntityDB] Last inserted kill_id=" + lastId);
+
         } catch (Exception e) {
             if (logger != null) logger.warning("[EntityDB] SQLite insertKillLog failed: " + e.getMessage());
         }
